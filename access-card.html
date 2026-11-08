@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#030305" />
+<title>BLACKCELL / Executive Access Pass</title>
+<style>
+  :root{color-scheme:dark;--paper:#f9fafb;--ink:#151617;--line:#fff}
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif}
+  body{background:radial-gradient(ellipse at 50% 12%,#27292c 0,#121315 49%,#08090a 100%);color:#f7f7f7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 14px;gap:17px}
+  .label{color:#a3a8b0;letter-spacing:.28em;text-transform:uppercase;font-size:10px;font-weight:800;text-align:center}
+  .pass{
+    width:min(370px,100%);aspect-ratio:370/564;background:var(--paper);border-radius:17px;
+    padding:5px;box-shadow:0 26px 70px #000b,0 0 0 1px #d4d6d8;
+    position:relative;overflow:hidden;isolation:isolate;
+  }
+  .body{height:100%;width:100%;background:var(--ink);border:2px solid var(--paper);border-radius:13px;overflow:hidden;position:relative;padding:8px 8px 9px}
+  .edge{position:absolute;right:5px;top:8px;bottom:7px;width:28px;border-left:3px solid #f9fafb;display:flex;flex-direction:column;align-items:center;gap:7px;z-index:3;background:#151617}
+  .edge .ring{border:2px solid white;border-radius:100%;width:14px;height:14px;line-height:9px;text-align:center;font-weight:900;font-size:11px; flex-shrink:0}
+  .v-bars{width:13px;flex:1;min-height:30px;background:repeating-linear-gradient(to bottom,#fff 0 4px,transparent 4px 9px,#fff 9px 11px,transparent 11px 17px);margin:2px 0}
+  .main{height:100%;margin-right:31px;display:flex;flex-direction:column;gap:5px}
+  .top{height:46%;background:var(--paper);padding:5px;clip-path:polygon(0 0,78% 0,100% 17%,100% 100%,0 100%)}
+  .top-in{height:100%;background:var(--ink);position:relative;padding:11px 13px 9px;clip-path:polygon(0 0,76.5% 0,100% 18%,100% 100%,0 100%)}
+  .serial{position:absolute;right:42px;top:10px;color:var(--paper);font-size:23px;font-weight:950;letter-spacing:-1px}
+  .brand-mark{display:block;width:104px;height:104px;margin:3px 0 5px 0}
+  .corp{font-size:34px;font-weight:1000;line-height:.95;letter-spacing:-1.6px;white-space:nowrap;transform:scaleX(.91);transform-origin:left center;margin-top:4px}
+  .corp-sub{font-size:17px;font-weight:750;line-height:1;letter-spacing:2.5px;border-top:3px solid #fff;width:max-content;max-width:100%;padding-top:3px}
+  .motto{font-size:13px;font-style:italic;letter-spacing:.05em;margin-top:21px;font-weight:700;white-space:nowrap}
+  .id-panel{flex:1;border:3px solid var(--paper);padding:17px 16px 12px;display:flex;flex-direction:column;justify-content:space-between;min-height:86px}
+  .employee{font-size:24px;font-weight:1000;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;outline:none}
+  .role{font-size:18px;text-transform:uppercase;outline:none;color:#eee;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stripes{height:18px;flex-shrink:0;background:repeating-linear-gradient(112deg,#fff 0px,#fff 5px,#141516 5px,#141516 12px);border:2px solid var(--paper)}
+  .clearance{height:64px;display:grid;grid-template-columns:43% 57%;border:3px solid var(--paper);background:var(--paper);color:var(--ink);flex-shrink:0}
+  .level{font-weight:1000;font-size:21px;display:flex;align-items:center;justify-content:center;white-space:nowrap;letter-spacing:-.4px}
+  .pass-access{background:var(--ink);color:var(--paper);text-align:center;display:flex;justify-content:center;align-items:center;flex-direction:column}
+  .pass-access strong{font-size:20px;line-height:1;font-weight:1000;white-space:nowrap}
+  .pass-access span{font-size:10px;letter-spacing:.08em;margin-top:3px}
+  .bottom{height:67px;background:var(--paper);padding:4px;clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 22%);flex-shrink:0}
+  .bottom-in{height:100%;background:var(--ink);clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 23%);display:flex;align-items:end;justify-content:space-between;padding:7px 11px 9px}
+  .chip-group{display:flex;align-items:center;gap:8px}
+  .pointer{width:0;height:0;border-top:15px solid transparent;border-bottom:15px solid transparent;border-right:17px solid #fff}
+  .chip{width:54px;height:37px;display:block}
+  .circles{display:flex;align-items:center;gap:5px}
+  .circles svg{width:21px;height:21px}
+  .help{font-size:12px;color:#acb0b6;text-align:center;max-width:480px;line-height:1.5}
+  .help kbd{font-family:inherit;border:1px solid #45474b;padding:2px 5px;border-radius:4px;color:white}
+  @media(max-width:400px){.pass{width:min(340px,100%)}.corp{font-size:30px}.brand-mark{width:90px;height:90px}.motto{margin-top:14px}.employee{font-size:21px}.role{font-size:16px}.pass-access strong{font-size:17px}.level{font-size:18px}.serial{font-size:20px}}
+  @media print{html,body{background:#fff!important;color:#000;padding:0;display:block}.label,.help{display:none}.pass{box-shadow:none;width:370px;margin:0;border:1px solid #222;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* BLACKCELL / EXECUTIVE NETWORK — cinematic skin aligned with the approved corporate entrance */
+:root{--paper:#b3aeba;--ink:#09090d;--line:#e9e4ed}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:radial-gradient(ellipse 53% 40% at 77% 49%,#76152533,transparent 80%),radial-gradient(ellipse 38% 40% at 16% 29%,#7a7b8512,transparent 85%),linear-gradient(110deg,#08090d,#020203 70%);position:relative;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.085;background:repeating-linear-gradient(0deg,transparent 0,transparent 3px,#ffffff 4px,transparent 5px)}
+.label{letter-spacing:.33em;color:#b17b87;font-size:10px}
+.pass{background:linear-gradient(150deg,#a3a0aa,#5a515d 22%,#c8c3ce 50%,#5e505a 84%,#bfb9c3);border-radius:21px;box-shadow:0 30px 100px #000c,0 0 52px #9e1a302c,inset 0 1px #ffffff7a;animation:cardIn .9s cubic-bezier(.2,.8,.2,1) both}
+.pass:before{content:"";position:absolute;inset:0;z-index:8;pointer-events:none;border-radius:21px;background:linear-gradient(110deg,transparent 36%,#ffffff08 50%,transparent 65%);animation:glassGlint 7s ease-in-out infinite}
+.body{background:linear-gradient(155deg,#1c1b22,#08090b 54%,#191018);border-color:#d4cbd5;border-radius:17px}
+.edge{background:#09090d;border-left-color:#c2b8c4}.edge .ring{border-color:#d6c6d2;color:#d9c4cc}
+.v-bars{background:repeating-linear-gradient(to bottom,#c4bac5 0 4px,transparent 4px 9px,#9b3449 9px 11px,transparent 11px 17px)}
+.top{background:linear-gradient(145deg,#d7cfda,#6f4656,#d6d0d8)}
+.top-in{background:linear-gradient(145deg,#22222a,#0b0b10 64%,#170d15)}
+.serial{right:42px;top:10px;color:#f1edf2;text-shadow:0 0 18px #ffffff32;font-variant-numeric:tabular-nums}
+.brand-mark{width:104px;height:104px;filter:drop-shadow(0 0 13px #b92c462a);animation:crestGlow 6s ease-in-out infinite}
+.corp{font-size:32px;letter-spacing:-1.5px;transform:scaleX(.94);color:#f3eff4}
+.corp-sub{font-size:14px;letter-spacing:3px;color:#bfc0c9;border-top:1px solid #ae4b5e;padding-top:5px}
+.motto{font-size:11px;font-style:normal;letter-spacing:.20em;color:#b27a87;font-weight:800;margin-top:20px}
+.id-panel{border-color:#9c939f;background:linear-gradient(120deg,#201d26a8,#0c0c10a8 73%);border-width:1px;box-shadow:inset 0 1px #ffffff14;padding:12px 16px;justify-content:center;gap:11px}
+.code-group{min-width:0}
+.code-label{color:#faf8fb;font-size:19px;font-weight:950;line-height:1.1;letter-spacing:-.03em}
+.code-value{color:#b5b0bd;font-size:12px;line-height:1.4;letter-spacing:.035em;margin-top:4px;outline:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.code-value:focus{outline:1px solid #ae5366;outline-offset:3px;border-radius:2px}
+.code-group+.code-group{border-top:1px solid #ffffff24;padding-top:9px}
+.employee{color:#faf8fb;letter-spacing:-.03em}.role{color:#b5b0bd;font-size:15px;letter-spacing:.06em;margin-top:5px}
+.stripes{height:14px;border-color:#a39aa6;border-width:1px;background:repeating-linear-gradient(112deg,#b94b61 0px,#b94b61 4px,#17151d 4px,#17151d 12px)}
+.clearance{background:#d8d2db;border-color:#a39aa6;border-width:1px;height:64px}.level{color:#201a23;font-size:20px}.pass-access{background:#37131f;color:#f2ebf2}.pass-access strong{font-size:18px}.pass-access span{font-size:9px;color:#d9b9c3}
+.bottom{background:#d3cad5}.bottom-in{background:linear-gradient(110deg,#141318,#08090c)}.circles svg{filter:drop-shadow(0 0 3px #b33b4b33)}
+.help{color:#85828f}.help kbd{border-color:#57474f}
+@keyframes cardIn{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes glassGlint{0%,30%{transform:translateX(-100%)}55%,100%{transform:translateX(100%)}}
+@keyframes crestGlow{0%,100%{filter:drop-shadow(0 0 9px #b92c461b)}50%{filter:drop-shadow(0 0 19px #b92c4655)}}
+@media(max-width:400px){.corp{font-size:30px}.role{font-size:13px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+@media print{body{background:white!important}.pass{box-shadow:none;animation:none;background:#f4f4f4}.pass:before{display:none}}
+
+/* Blackcell locked digital credential interface; visual demonstration only. */
+.id-panel{position:relative;}
+.secure-value{display:flex;gap:12px;align-items:center;justify-content:space-between;white-space:normal;letter-spacing:.14em;color:#d7cad3;font-weight:800;}
+.secure-value .value-lock{color:#c68d9a;letter-spacing:.16em;font-size:9px;font-weight:900;}
+.card-access-panel{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:2px;}
+.card-access-panel button{font:inherit;border:1px solid #714657;background:linear-gradient(135deg,#301b28,#17151d);color:#f3e9ef;border-radius:8px;padding:8px 17px;font-size:10px;font-weight:850;letter-spacing:.14em;cursor:pointer;box-shadow:inset 0 1px #ffffff17;transition:.2s;}
+.card-access-panel button:hover{border-color:#c67b8c;background:#3c202e;}
+.lock-status{font-size:9px;color:#bc909e;letter-spacing:.12em;font-weight:750;text-align:center;}
+.overlay{position:fixed;inset:0;background:#020205cd;backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px);z-index:50;display:none;align-items:center;justify-content:center;padding:18px;}
+.overlay.open{display:flex;animation:fadeLock .2s ease-out;}
+.auth-panel{width:min(440px,100%);background:linear-gradient(145deg,#1b1922,#09090e 68%,#160c13);border:1px solid #69505d;border-radius:23px;padding:25px;box-shadow:0 30px 100px #000e,0 0 70px #9c294022;position:relative;}
+.auth-panel:before{content:"";position:absolute;top:0;left:27px;right:27px;height:2px;background:linear-gradient(90deg,transparent,#b25069,transparent);}
+.auth-head{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:20px;}
+.auth-kicker{color:#b67d8e;letter-spacing:.21em;font-size:9px;font-weight:850;margin-bottom:7px;}
+.auth-title{font-size:22px;font-weight:850;color:#f8f4f9;letter-spacing:-.04em;}
+.auth-sub{font-size:12px;color:#9e9aa9;line-height:1.6;margin-top:8px;}
+.close-auth{border:1px solid #49414b;background:#2a2830;color:#e4dfe6;border-radius:50%;height:32px;width:32px;font-size:19px;cursor:pointer;}
+.form-label{display:block;font-size:10px;color:#bdb5c1;letter-spacing:.13em;font-weight:800;margin:13px 0 7px;}
+.auth-input{width:100%;border:1px solid #4d424d;border-radius:9px;background:#101016;color:#f9f7fa;font-size:15px;padding:12px 13px;outline:none;}
+.auth-input:focus{border-color:#b75d77;box-shadow:0 0 0 2px #b75d7720;}
+.auth-button{display:block;width:100%;background:linear-gradient(105deg,#582535,#301422);color:#f6edf2;border:1px solid #9e4d63;border-radius:10px;padding:13px;margin-top:18px;font-weight:850;font-size:12px;letter-spacing:.13em;cursor:pointer;}
+.auth-button:hover{background:#642a3e;}
+.auth-foot{font-size:11px;color:#898492;line-height:1.6;margin-top:15px;}
+.auth-message{color:#d79eac;font-size:11px;margin-top:10px;min-height:16px;}
+.auth-demo{margin-top:14px;border:1px solid #54424e;border-radius:9px;background:#171219;padding:12px;color:#c6bac6;line-height:1.5;font-size:11px;}
+.auth-demo button{margin-top:9px;background:#28212b;color:#ede6ee;border:1px solid #654d5a;border-radius:8px;padding:9px 12px;cursor:pointer;font-weight:700;}
+.preview-authorized .value-lock{color:#bad5c5;}
+.preview-authorized .secure-value .dots{letter-spacing:.08em;}
+@keyframes fadeLock{from{opacity:0}to{opacity:1}}
+@media print{.overlay,.card-access-panel,.help{display:none!important}}
+
+/* Access Pass changes from crimson to green only in the authorized visual state. */
+.pass-access{transition:background .42s ease,color .42s ease,box-shadow .42s ease;}
+.pass-access span{transition:color .42s ease;}
+.preview-authorized .pass-access{background:linear-gradient(135deg,#155139,#0b3427);color:#f1fff7;box-shadow:inset 0 0 0 1px #6bb89155;}
+.preview-authorized .pass-access span{color:#b5efd0;}
+@media(prefers-reduced-motion:reduce){.pass-access,.pass-access span{transition:none;}}
+
+/* Longer access/security codes without changing the original cinematic color theme. */
+.secure-value{display:block;min-width:0;overflow:visible;white-space:normal;letter-spacing:.035em;}
+.secure-value .dots{display:block;width:100%;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;font-weight:650;letter-spacing:.025em;line-height:1.35;overflow-wrap:anywhere;word-break:break-word;}
+.secure-value .value-lock{display:none!important;}
+.code-group+.code-group{padding-top:8px;}
+.preview-authorized .secure-value .dots{color:#dbd5df;letter-spacing:.025em;}
+.lock-status{text-align:center;max-width:min(370px,100%);}
+@media(max-width:400px){.secure-value .dots{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="label">BLACKCELL / EXECUTIVE NETWORK</div>
+<article class="pass" aria-label="Blackcell Corporation Level 7 access pass">
+  <div class="body">
+    <div class="edge" aria-hidden="true"><span class="ring">×</span><div class="v-bars"></div><span class="ring">×</span></div>
+    <div class="main">
+      <section class="top"><div class="top-in">
+        <span class="serial">0114</span>
+        <svg class="brand-mark" viewBox="0 0 100 100" role="img" aria-label="Blackcell emblem"><path d="M50 4 86 23V69L50 93 14 69V23L50 4Z" fill="none" stroke="#d9d5dd" stroke-width="1.7"/><path d="M50 12 77 27V64L50 82 23 64V27L50 12Z" fill="none" stroke="#a83950" stroke-width="1.5"/><path d="M38 29V68H55C72 68 72 51 58 49 69 44 66 29 54 29H38ZM48 39H54C59 39 59 46 54 46H48V39ZM48 54H56C62 54 62 61 56 61H48V54Z" fill="#f3f1f4"/><path d="M20 20l7 4M80 20l-7 4M19 75l7-4M81 75l-7-4" stroke="#d85168" stroke-width="1.8"/></svg>
+        <div class="corp">BLACKCELL</div>
+        <div class="corp-sub">CORPORATION</div>
+        <div class="motto">CONTROL IS EVERYTHING.</div>
+      </div></section>
+      <section class="id-panel"><div class="code-group"><div class="code-label">ACCESS CODE</div><div class="code-value secure-value" aria-label="Access code locked"><span class="dots">•••• •••• ••••</span><span class="value-lock">LOCKED</span></div></div><div class="code-group"><div class="code-label">SECURITY CODE</div><div class="code-value secure-value" aria-label="Security code locked"><span class="dots">•••• •••• ••••</span><span class="value-lock">LOCKED</span></div></div></section>
+      <div class="stripes" aria-hidden="true"></div>
+      <section class="clearance"><div class="level">LEVEL 7</div><div class="pass-access"><strong>ACCESS PASS</strong><span>CORPORATE NETWORK</span></div></section>
+      <div class="bottom" aria-hidden="true"><div class="bottom-in"><div class="chip-group"><span class="pointer"></span><svg class="chip" viewBox="0 0 60 42"><rect width="59" height="41" rx="9" fill="#fff"/><path d="M8 0v42M28 0v42M50 0v42M0 13h59M0 29h59" stroke="#171717" stroke-width="2.2"/><path d="M8 13L19 5M28 13L39 5M8 29L19 37M28 29L39 37" stroke="#171717" stroke-width="2"/></svg></div><div class="circles"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="white"/></svg><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="white"/></svg><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="white" stroke-width="2"/><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg></div></div></div>
+    </div>
+  </div>
+</article>
+<div class="card-access-panel"><button id="unlockCard" type="button">🔒 &nbsp; UNLOCK DIGITAL CARD</button></div>
+<div class="lock-status" id="lockStatus">CREDENTIAL LOCKED / AUTHORIZATION REQUIRED</div>
+<p class="help">Blackcell digital access pass design. Codes remain hidden in the locked state. Real authentication and private code retrieval require a secure backend.</p>
+<div class="overlay" id="authOverlay" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="auth-panel">
+    <div class="auth-head"><div><div class="auth-kicker">BLACKCELL / EXECUTIVE NETWORK</div><div class="auth-title" id="authTitle">Security Authorization</div><div class="auth-sub">Sign in to request access to your private digital card.</div></div><button class="close-auth" id="closeAuth" aria-label="Close dialog" type="button">×</button></div>
+    <form id="authForm" autocomplete="off">
+      <label class="form-label" for="authEmail">AUTHORIZED ACCOUNT</label><input class="auth-input" id="authEmail" type="email" placeholder="Corporate email address" autocomplete="username" required>
+      <label class="form-label" for="authPassword">PASSWORD</label><input class="auth-input" id="authPassword" type="password" placeholder="Enter password" autocomplete="current-password" required>
+      <button type="submit" class="auth-button">VERIFY AUTHORIZATION</button>
+      <div id="authMessage" class="auth-message" role="status" aria-live="polite"></div>
+    </form>
+    <div class="auth-demo"><strong>INTERACTIVE DESIGN PREVIEW</strong><br>This standalone HTML has no connected identity provider and intentionally does not accept or store passwords. For a visual demo of the post-login state, use the button below.<br><button type="button" id="previewUnlock">Preview Authorized State</button></div>
+    <div class="auth-foot">Never enter your real corporate credentials into an unconnected preview. Code values must be retrieved from a protected server only after authentication.</div>
+  </div>
+</div>
+<script>
+(()=>{
+ const open=document.getElementById('unlockCard'), overlay=document.getElementById('authOverlay'), close=document.getElementById('closeAuth'), form=document.getElementById('authForm'), preview=document.getElementById('previewUnlock'), status=document.getElementById('lockStatus');
+ let authorized=false;
+ function closeDialog(){overlay.classList.remove('open');document.getElementById('authPassword').value='';}
+ open.addEventListener('click',()=>{if(authorized){authorized=false;document.body.classList.remove('preview-authorized');document.querySelectorAll('.secure-value .dots').forEach(el=>el.textContent='•••• •••• ••••');document.querySelectorAll('.secure-value .value-lock').forEach(el=>el.textContent='LOCKED');status.textContent='CREDENTIAL LOCKED / AUTHORIZATION REQUIRED';open.textContent='🔒  UNLOCK DIGITAL CARD';return;}overlay.classList.add('open');document.getElementById('authEmail').focus();});
+ close.addEventListener('click',closeDialog);overlay.addEventListener('click',e=>{if(e.target===overlay)closeDialog();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDialog();});
+ form.addEventListener('submit',e=>{e.preventDefault();document.getElementById('authMessage').textContent='Secure authentication is not connected. This preview does not process credentials.';document.getElementById('authPassword').value='';});
+ preview.addEventListener('click',()=>{authorized=true;document.body.classList.add('preview-authorized');document.querySelectorAll('.secure-value .dots').forEach((el,i)=>el.textContent=i===0?'ACCESS CODE · 16–32 CHARACTERS':'SECURITY CODE · 16–32 CHARACTERS');document.querySelectorAll('.secure-value .value-lock').forEach(el=>el.textContent='DEMO');status.textContent='AUTHORIZED STATE PREVIEW / CARD READ-ONLY';open.textContent='🔒  LOCK DIGITAL CARD';closeDialog();});
+})();
+</script>
+</body>
+</html>
