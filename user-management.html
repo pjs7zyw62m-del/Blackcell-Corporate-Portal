@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050507">
+<title>BLACKCELL / User Management</title>
+<style>
+:root{color-scheme:dark;--bg:#050507;--panel:#15151a;--line:#ffffff1a;--white:#f4f3f5;--muted:#9999a7;--red:#a52d43;--edge:#48434a}
+*{box-sizing:border-box}html{scrollbar-width:none}html::-webkit-scrollbar,body::-webkit-scrollbar{display:none}body{margin:0;min-height:100vh;background:#050507;color:var(--white);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;overflow-x:hidden}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #db6d7e;outline-offset:3px}a{text-decoration:none;color:inherit}.atmos{position:fixed;z-index:0;inset:0;pointer-events:none;background:radial-gradient(ellipse 47% 52% at 83% 42%,#66152438,transparent 79%),radial-gradient(ellipse 42% 55% at 17% 12%,#70708011,transparent 82%),linear-gradient(120deg,#0a0b0f,#020203 68%)}.atmos:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0,transparent 4px,#ffffff05 5px,transparent 6px);opacity:.25}.arch{position:fixed;top:-38vh;left:42%;width:72vw;height:120vh;border-radius:50%;transform:rotate(20deg);border:1px solid #ffffff0b;pointer-events:none}.shell{position:relative;z-index:1;max-width:1530px;margin:0 auto;padding:0 clamp(18px,4.3vw,65px) 70px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:25px 0;border-bottom:1px solid #ffffff1a}.identity{display:flex;align-items:center;gap:14px}.logo{width:44px;height:44px;display:grid;place-items:center;border:1px solid #ffffff35;border-radius:12px;background:linear-gradient(130deg,#292930,#0b0b10);font-size:24px;font-weight:850;box-shadow:inset 0 1px #ffffff22}.identity strong{display:block;font-size:12px;letter-spacing:.19em}.identity small{display:block;color:#93939f;font-size:9px;letter-spacing:.22em;margin-top:6px}.top-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;gap:9px;padding:10px 14px;border:1px solid #ffffff25;border-radius:999px;font-size:10px;letter-spacing:.13em;color:#cbcad2;background:#ffffff08}.red-dot{display:block;width:7px;height:7px;border-radius:100%;background:#b8394e;box-shadow:0 0 13px #c23f56}.head{display:flex;align-items:end;justify-content:space-between;gap:22px;flex-wrap:wrap;padding:70px 0 36px}.overline{display:flex;align-items:center;gap:13px;font-size:10px;letter-spacing:.29em;color:#c17d88;font-weight:750}.overline:before{content:"";width:29px;height:1px;background:#b43b50}.head h1{font-size:clamp(49px,5.5vw,87px);font-weight:740;letter-spacing:-.073em;line-height:.96;margin:19px 0}.head h1 span{background:linear-gradient(110deg,#fff,#aaa9b2);background-clip:text;-webkit-background-clip:text;color:transparent}.head p{color:#a4a2af;line-height:1.75;max-width:680px;font-size:14px;margin:0}.btn{border:1px solid #ffffff2a;color:#e8e7ed;background:linear-gradient(135deg,#2e2c347e,#131219ee);padding:14px 18px;border-radius:13px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-size:11px;font-weight:800;letter-spacing:.095em;transition:filter .2s,transform .2s;white-space:nowrap}.btn:hover{filter:brightness(1.24);transform:translateY(-1px)}.btn.primary{border-color:#bd6070;background:linear-gradient(110deg,#6e1b2c,#a43045 55%,#6f1d31);color:#fff;box-shadow:inset 0 1px #ffffff1c,0 0 35px #9c22311a}.btn.danger{background:#7b2030;border-color:#bc6671}.btn:disabled{cursor:not-allowed;opacity:.45}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:10px 0 29px}.stat,.glass{background:linear-gradient(140deg,#25242d86,#141319b8 43%,#0f0e13d9);border:1px solid #ffffff22;box-shadow:inset 0 1px #ffffff11,0 22px 45px #0004;border-radius:18px;backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px)}.stat{min-height:128px;padding:23px}.stat .name{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#92929e}.stat .value{margin-top:21px;font-size:35px;font-weight:650;letter-spacing:-.04em}.stat .note{font-size:10px;color:#9594a0;margin-top:5px}.panel{padding:25px;margin-top:17px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:22px}.panel-head strong{font-size:15px;letter-spacing:.03em}.panel-head small{display:block;font-size:11px;color:#9898a4;margin-top:6px}.filters{display:flex;gap:9px;flex-wrap:wrap}.field{border:1px solid #ffffff26;background:#07080bca;color:#eeeef1;border-radius:11px;padding:13px 14px;min-width:130px}.field::placeholder{color:#777882}.filters .field:first-child{min-width:min(260px,70vw)}.table-wrap{overflow-x:auto;scrollbar-width:thin}.table-wrap table{width:100%;border-collapse:collapse;min-width:680px;text-align:left}.table-wrap th{color:#858592;font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:650;padding:14px 14px;border-bottom:1px solid #ffffff20}.table-wrap td{border-bottom:1px solid #ffffff13;padding:16px 14px;font-size:12px;color:#d4d2dc}.table-wrap tr:last-child td{border:0}.user-cell{display:flex;align-items:center;gap:12px}.avatar{display:grid;place-items:center;flex:none;width:37px;height:37px;border:1px solid #ffffff2b;background:linear-gradient(145deg,#39343d,#14131a);border-radius:11px;color:#f4f2f6;font-weight:750;font-size:12px}.person-name{font-weight:650;color:#f3f1f5}.person-email{color:#95949f;font-size:11px;margin-top:4px;overflow-wrap:anywhere}.status{display:inline-flex;align-items:center;border:1px solid #ffffff2b;border-radius:999px;padding:7px 11px;color:#ccc;font-size:10px;white-space:nowrap}.status.active{border-color:#467e5c80;color:#9ce0b4;background:#15342370}.status.suspended{border-color:#be823d5e;color:#dfbd82}.status.revoked{border-color:#b34b5b;color:#e0a3ad}.linkbtn{border:0;background:none;color:#dcbcc3;text-decoration:underline;text-underline-offset:4px;padding:8px 0;font-size:11px}.empty{min-height:240px;display:grid;place-items:center;align-content:center;gap:11px;text-align:center;color:#a1a1ae}.empty strong{font-size:17px;color:#e5e4e9}.empty svg{opacity:.65}.footer-note{margin-top:20px;border-top:1px solid #ffffff18;padding-top:17px;font-size:11px;line-height:1.7;color:#91919d}.footer-note b{color:#c1bec6}.modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:18px;background:#000b;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.modal.open{display:flex}.dialog{position:relative;max-width:650px;width:100%;max-height:min(92vh,900px);overflow:auto;scrollbar-width:none;background:linear-gradient(145deg,#2b2930f5,#111116fa 46%,#09090dfc);border:1px solid #ffffff3a;border-radius:24px;box-shadow:0 45px 120px #000d,inset 0 1px #ffffff22;padding:clamp(19px,3vw,31px);animation:show .25s ease-out}.dialog:before{content:"";height:1px;position:absolute;top:0;left:16%;right:16%;background:linear-gradient(90deg,transparent,#b76a78,transparent)}.dhead{display:flex;justify-content:space-between;align-items:start;gap:15px;padding-bottom:20px;border-bottom:1px solid #ffffff21}.dhead h2{margin:8px 0 4px;font-size:25px;letter-spacing:-.04em}.dhead small{font-size:10px;letter-spacing:.17em;color:#a76470}.x{width:35px;height:35px;border-radius:50%;border:1px solid #ffffff24;background:#ffffff0d;color:white;font-size:20px}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;margin:21px 0}.formgrid .full{grid-column:1/-1}.formgrid label{font-size:10px;color:#a9a7b2;letter-spacing:.10em;text-transform:uppercase;display:block;margin-bottom:9px}.formgrid .field{width:100%}.hint{font-size:11px;color:#a3a1ae;line-height:1.65}.actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:18px}.mini-card{margin:20px 0;border:1px solid #ad506152;background:linear-gradient(120deg,#281a24e8,#0c0b11c9);border-radius:16px;padding:20px;position:relative;overflow:hidden}.mini-card:after{content:"B";position:absolute;right:8px;top:-37px;font-size:178px;font-weight:900;color:#ffffff07}.mini-card small{color:#b87e8b;letter-spacing:.25em;font-size:10px}.mini-card h3{font-size:24px;letter-spacing:-.04em;margin:12px 0 8px}.mini-card p{margin:7px 0;color:#bcbac5;font-size:11px}.row-actions{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0 0}.screen-reader{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}@keyframes show{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}@media(max-width:850px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.head{padding-top:48px}}@media(max-width:530px){.stats{gap:9px}.stat{padding:16px;min-height:108px}.stat .value{font-size:28px}.formgrid{grid-template-columns:1fr}.head h1{font-size:49px}.topbar{align-items:start}.top-actions .pill{display:none}.panel{padding:15px}.filters{width:100%}.filters .field{flex:1;min-width:0}.actions .btn{flex:1}.identity strong{font-size:10px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+<style>
+[hidden]{display:none!important}
+#authCover{position:fixed;inset:0;background:rgba(3,3,6,.97);z-index:10000;display:grid;place-items:center;overflow-y:auto;padding:25px}
+.auth-card{width:min(480px,100%);padding:36px;background:linear-gradient(135deg,#1b1b20ed,#09090cee);border:1px solid #ffffff25;border-radius:24px;box-shadow:0 20px 90px #000b}
+.auth-card .brandline{font-size:11px;letter-spacing:.28em;color:#c4a8b3}
+.auth-card h2{font-size:30px;letter-spacing:.03em;color:#eae6e9;margin:15px 0 10px}
+.auth-card p{font-size:13px;color:#aaa4ad;line-height:1.7}
+.auth-card label{display:block;margin:16px 0 5px;color:#c7c2c8;font-size:12px}
+.auth-card input{width:100%}
+.auth-card .btn{margin-top:18px;width:100%}
+.auth-card .alert{min-height:24px;color:#f6a8ae;font-size:12px;margin:12px 0}
+#userForm .formgrid .full{grid-column:1/-1}
+#previewBox{padding:22px;border:1px solid #ffffff21;border-radius:16px;background:linear-gradient(135deg,#16161c,#050508);margin-top:15px}
+#previewBox .previewmark{font-size:11px;letter-spacing:.25em;color:#d6bfcb}
+#previewBox h3{font-size:23px;margin:20px 0 8px;color:#eee}
+#previewBox p{color:#bbb;font-size:13px;line-height:1.7}
+#sendStatus{font-size:13px;line-height:1.6;margin-top:13px;min-height:19px;color:#cfcbd2}
+#sendStatus.error{color:#f4a1a9}
+#sendStatus.good{color:#8fd6b4}
+.codewrap{display:flex;gap:7px}.codewrap input{flex:1;min-width:0}.codewrap button{flex:0 0 auto}
+.note-credentials{font-size:12px;color:#b7afb9;line-height:1.6;padding:9px 0}
+</style></head><body>
+<div class="atmos"></div><div class="arch"></div>
+<div class="shell">
+<header class="topbar"><div class="identity"><div class="logo">B</div><div><strong>BLACKCELL CORPORATION</strong><small>EXECUTIVE NETWORK</small></div></div><div class="top-actions"><span class="pill"><span class="red-dot"></span> ADMINISTRATION / PREVIEW</span><a class="btn" href="dashboard.html" id="back">← Dashboard</a></div></header>
+<section class="head"><div><div class="overline">CORPORATE ADMINISTRATION / PERSONNEL</div><h1><span>USER</span> MANAGEMENT</h1><p>Corporate personnel directory, access clearance, and digital credential assignments. A unified interface for Blackcell administration.</p></div><button class="btn primary" id="add">＋ CREATE USER</button></section>
+<section class="stats"><div class="stat"><div class="name">Personnel Records</div><div class="value" id="total">0</div><div class="note">Verified corporate directory</div></div><div class="stat"><div class="name">Active</div><div class="value" id="active">0</div><div class="note">Password activated</div></div><div class="stat"><div class="name">Suspended</div><div class="value" id="suspended">0</div><div class="note">Deactivated accounts</div></div><div class="stat"><div class="name">Revoked</div><div class="value" id="revoked">0</div><div class="note">Invited / pending</div></div></section>
+<section class="glass panel"><div class="panel-head"><div><strong>CORPORATE PERSONNEL DIRECTORY</strong><small>Browse, search and manage user profiles</small></div><div class="filters"><input class="field" type="search" id="search" aria-label="Search users" placeholder="Search personnel…"><select class="field" id="filter" aria-label="Filter by status"><option value="all">All Statuses</option><option value="Active">Active</option><option value="Suspended">Suspended</option><option value="Pending">Pending</option></select></div></div><div id="list"></div></section>
+<div class="footer-note"><b>SECURE CORPORATE ADMINISTRATION:</b> Invitations require authenticated Level 7 owner verification. Access and security codes are sent only to the secured server and are not saved in the browser. The invitation is not confirmed delivered until the recipient receives it.</div>
+</div>
+
+<div class="modal" id="modal" role="presentation">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="dhead"><div><small>BLACKCELL / CORPORATE PERSONNEL</small><h2 id="modalTitle">Invite New User</h2><div class="hint" id="modalDesc">Owner authorization required for every employee invitation.</div></div><button class="x" id="close" aria-label="Close">×</button></div>
+    <form id="userForm">
+      <div class="formgrid">
+        <div class="full"><label for="fullName">Name</label><input class="field" id="fullName" required maxlength="80" autocomplete="off" placeholder="Employee name"></div>
+        <div class="full"><label for="email">Email Address</label><input class="field" type="email" id="email" required maxlength="254" autocomplete="off" placeholder="employee@example.com"></div>
+        <div><label for="username">Username</label><div class="codewrap"><input class="field" id="username" required minlength="6" maxlength="32" pattern="[a-z][a-z0-9_]{5,31}" autocomplete="off" autocapitalize="none" spellcheck="false"><button class="btn" type="button" id="genUsername">GENERATE</button></div></div>
+        <div><label for="level">Clearance Level</label><select id="level" class="field"><option value="1">Level 1</option><option value="2">Level 2</option><option value="3">Level 3</option><option value="4">Level 4</option><option value="5">Level 5</option><option value="6">Level 6</option></select></div>
+        <div class="full"><label for="access">Access Code — 4 Digits</label><div class="codewrap"><input class="field" type="password" inputmode="numeric" id="access" required pattern="[0-9]{4}" maxlength="4" autocomplete="off"><button class="btn" type="button" id="genAccess">GENERATE</button><button class="btn" type="button" data-reveal="access">REVEAL</button></div></div>
+        <div class="full"><label for="security">Security Code — 12 Digits</label><div class="codewrap"><input class="field" type="password" inputmode="numeric" id="security" required pattern="[0-9]{12}" maxlength="12" autocomplete="off"><button class="btn" type="button" id="genSecurity">GENERATE</button><button class="btn" type="button" data-reveal="security">REVEAL</button></div></div>
+        <div class="full note-credentials">Codes are protected as server-side hashes. They cannot be retrieved later. Give them to the employee using a separate secure channel; they are not included in the invitation email.</div>
+      </div>
+      <div class="row-actions"><button class="btn" type="button" id="previewInvitation">PREVIEW INVITATION</button><button class="btn primary" type="submit" id="sendInvite">SEND EMPLOYEE INVITATION</button><button class="btn" id="cancel" type="button">CANCEL</button></div>
+      <div id="previewBox" hidden></div><div id="sendStatus" role="status" aria-live="polite"></div>
+    </form>
+    <div id="detail" hidden></div>
+  </div>
+</div>
+<div id="authCover">
+  <div class="auth-card">
+    <div class="brandline">BLACKCELL CORPORATION / EXECUTIVE NETWORK</div>
+    <h2 id="authTitle">Owner Authorization</h2>
+    <p id="authDescription">Sign in with your authorized Supabase account to manage corporate invitations.</p>
+    <form id="loginForm">
+      <label for="ownerEmail">Owner Email</label><input id="ownerEmail" class="field" required type="email" autocomplete="username">
+      <label for="ownerPassword">Owner Password</label><input id="ownerPassword" class="field" required type="password" autocomplete="current-password">
+      <button class="btn primary" type="submit" id="loginSubmit">SIGN IN</button>
+    </form>
+    <form id="verifyForm" hidden>
+      <label for="ownerAccess">Existing Master Access Code</label><input id="ownerAccess" class="field" required type="password" autocomplete="off">
+      <label for="ownerSecurity">Existing Master Security Code</label><input id="ownerSecurity" class="field" required type="password" autocomplete="off">
+      <button class="btn primary" type="submit" id="verifySubmit">VERIFY CORPORATE ACCESS</button>
+      <button class="btn" type="button" id="switchAccount">SIGN OUT / SWITCH ACCOUNT</button>
+    </form>
+    <div id="authMessage" class="alert" role="alert" aria-live="polite"></div>
+    <p>Only a verified Level 7 owner may send employee invitations. No codes or passwords are stored by this page.</p>
+  </div>
+</div>
+<script type="module">
+
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/+esm';
+const sb=createClient('https://eeddazzwqokqlzvzjlxz.supabase.co','sb_publishable_QKh-RY2C0Ycu2G29fX7Xgw_W72OLu2-',{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $=(id)=>document.getElementById(id);
+const esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let members=[],busy=false;
+const reasons={sign_in_required:'Please sign in.',invalid_session:'Session expired. Sign in again.',verified_level7_owner_required:'Verify your master codes again to authorize this operation.',username_already_used:'That username is already assigned. Generate a new one.',invalid_employee_credentials:'Check the name, email, username and both numeric codes.',invitation_failed:'Supabase could not send the invitation. Verify email delivery configuration.',registration_not_completed:'Invitation could not be completed; no access was granted.',hourly_invitation_limit:'Invitation limit reached. Retry later.',invitation_service_unavailable:'Invitation service is unavailable. Please retry.',invitation_service_not_configured:'The invitation service is not configured.'};
+function authError(s){$('authMessage').textContent=s||''}
+function showAuth(stage){$('authCover').hidden=false; $('loginForm').hidden=stage!=='login';$('verifyForm').hidden=stage!=='codes';$('authTitle').textContent=stage==='login'?'Owner Authorization':'Corporate Code Verification';$('authDescription').textContent=stage==='login'?'Sign in with your authorized account.':'Enter the existing NEXUS master access and security codes to unlock corporate management.'; authError('');}
+async function getOwner(){
+ const {data:{user},error}=await sb.auth.getUser();
+ if(error||!user){showAuth('login');return false;}
+ const {data,error:readError}=await sb.from('corp_access_members').select('role,clearance_level,active').eq('user_id',user.id).maybeSingle();
+ if(readError||data?.active!==true||data?.role!=='owner'||data?.clearance_level!==7){
+  await sb.auth.signOut();showAuth('login');authError('Only the authorized Level 7 owner may access User Management.');return false;
+ }
+ const {data:status,error:statusError}=await sb.rpc('corp_code_status');
+ if(statusError||!status?.verified){showAuth('codes');return false;}
+ $('authCover').hidden=true;await refreshMembers();return true;
+}
+async function refreshMembers(){
+ const {data,error}=await sb.rpc('corp_admin_members');
+ if(error||!data?.ok){members=[];render();showAuth('codes');authError('Your corporate verification expired. Please verify again.');return;}
+ members=Array.isArray(data.members)?data.members:[];render();
+}
+$('loginForm').addEventListener('submit',async e=>{
+ e.preventDefault();const b=$('loginSubmit');b.disabled=true;authError('');
+ try{
+  const {error}=await sb.auth.signInWithPassword({email:$('ownerEmail').value.trim(),password:$('ownerPassword').value});
+  $('ownerPassword').value='';
+  if(error){authError(error.message);return;}
+  await getOwner();
+ }catch(err){authError(String(err?.message||'Unable to sign in'))}finally{b.disabled=false;}
+});
+$('verifyForm').addEventListener('submit',async e=>{
+ e.preventDefault();const b=$('verifySubmit');b.disabled=true;authError('Verifying...');
+ try{
+  const {data,error}=await sb.functions.invoke('nexus-gateway-verify',{body:{accessCode:$('ownerAccess').value,securityCode:$('ownerSecurity').value}});
+  $('ownerAccess').value='';$('ownerSecurity').value='';
+  if(error||data?.verified!==true){authError('Master code verification failed or is temporarily locked.');return;}
+  const {data:grant,error:grantErr}=await sb.rpc('corp_finalize_nexus_verification');
+  if(grantErr||grant?.ok!==true){authError('Could not finalize verification. Retry your master codes.');return;}
+  await getOwner();
+ }catch(err){authError(String(err?.message||'Verification unavailable'))}finally{b.disabled=false;}
+});
+$('switchAccount').addEventListener('click',async()=>{await sb.auth.signOut();members=[];render();showAuth('login')});
+function statusOf(m){return m.active===false?'Suspended':!m.activated?'Pending':'Active'}
+function render(){
+ const rows=members.map(m=>({...m,status:statusOf(m)}));
+ $('total').textContent=rows.length;
+ $('active').textContent=rows.filter(m=>m.status==='Active').length;
+ $('suspended').textContent=rows.filter(m=>m.status==='Suspended').length;
+ $('revoked').textContent=rows.filter(m=>m.status==='Pending').length;
+ const term=$('search').value.toLowerCase().trim(),status=$('filter').value;
+ const list=rows.filter(m=>(status==='all'||m.status===status)&&((m.display_name||'')+' '+(m.email||'')+' '+(m.username||'')).toLowerCase().includes(term));
+ if(!list.length){$('list').innerHTML='<div class="empty"><strong>No matching personnel</strong><span>Use CREATE USER to invite an employee.</span></div>';return;}
+ $('list').innerHTML='<div class="table-wrap"><table><thead><tr><th>Employee</th><th>Username</th><th>Role</th><th>Clearance</th><th>Status</th><th></th></tr></thead><tbody>'+list.map(m=>'<tr><td><div class="user-cell"><div class="avatar">'+esc((m.display_name||'B').slice(0,2).toUpperCase())+'</div><div><div class="person-name">'+esc(m.display_name)+'</div><div class="person-email">'+esc(m.email||'')+'</div></div></div></td><td>'+esc(m.username||'—')+'</td><td>'+esc(m.role)+'</td><td>LEVEL '+esc(m.clearance_level)+'</td><td><span class="status '+esc(m.status.toLowerCase())+'">'+esc(m.status)+'</span></td><td><button class="linkbtn" type="button" data-view="'+esc(m.user_id)+'">VIEW →</button></td></tr>').join('')+'</tbody></table></div>';
+ $('list').querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>view(b.dataset.view)));
+}
+function digits(count){const a=new Uint8Array(count);let result='';for(let i=0;i<count;i++){let b;do{crypto.getRandomValues(a.subarray(i,i+1));b=a[i]}while(b>=250);result+=String(b%10);}return result;}
+function username(){let base=$('fullName').value.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,'').trim().replace(/\s+/g,'_').replace(/_+/g,'_');if(!/^[a-z]/.test(base))base='member';base=base.slice(0,24);if(base.length<5)base=base.padEnd(5,'x');const a=new Uint8Array(4);crypto.getRandomValues(a);return(base+'_'+Array.from(a,x=>(x%36).toString(36)).join('')).slice(0,32);}
+function openModal(){ $('modal').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){if(busy)return;$('modal').classList.remove('open');document.body.style.overflow='';$('access').value='';$('security').value='';$('previewBox').hidden=true;}
+function create(){$('modalTitle').textContent='Invite New Employee';$('modalDesc').textContent='A real account invitation will be requested from Supabase.';$('detail').hidden=true;$('userForm').hidden=false;$('userForm').reset();$('username').value=username();$('access').value=digits(4);$('security').value=digits(12);$('level').value='1';$('sendStatus').textContent='';$('sendStatus').className='';$('previewBox').hidden=true;openModal();$('fullName').focus();}
+function view(id){const m=members.find(x=>x.user_id===id);if(!m)return;$('userForm').hidden=true;$('detail').hidden=false;$('modalTitle').textContent='Corporate Personnel';$('modalDesc').textContent='Verified directory record';$('detail').innerHTML='<div class="mini-card"><small>BLACKCELL / PERSONNEL NETWORK</small><h3>'+esc(m.display_name)+'</h3><p>'+esc(m.email)+' · '+esc(m.username||'—')+'</p><p>'+esc(m.role.toUpperCase())+' · LEVEL '+esc(m.clearance_level)+' · '+esc(statusOf(m))+'</p></div><div class="hint">Digital NETWORK card and code verification are available to the employee after email and password activation. Numeric codes cannot be retrieved from the server.</div>';openModal();}
+function preview(){
+ if(!$('fullName').value.trim()||!$('email').validity.valid){$('sendStatus').textContent='Enter a valid name and email to preview.';return;}
+ $('previewBox').hidden=false;
+ $('previewBox').innerHTML='<div class="previewmark">BLACKCELL CORPORATION</div><h3>Corporate Network Invitation</h3><p>Dear '+esc($('fullName').value.trim())+',</p><p>You have been invited to activate your Blackcell Corporation Network account. Use your secure invitation link to confirm your email address and establish your password.</p><p>Account email: '+esc($('email').value.trim())+'</p><p>Corporate access requires additional verification. Your Access Code and Security Code are not included in this invitation.</p><p style="font-size:11px;color:#999">Visual preview only. The email actually sent uses your Supabase Auth Invite template until that template is customized.</p>';
+}
+$('userForm').addEventListener('submit',async e=>{
+ e.preventDefault();if(busy||!$('userForm').reportValidity())return;
+ const name=$('fullName').value.trim(),email=$('email').value.trim().toLowerCase();
+ if(name.length<2){$('sendStatus').textContent='Enter the employee name.';return;}
+ busy=true;$('sendInvite').disabled=true;$('sendInvite').textContent='SENDING INVITATION...';
+ $('sendStatus').className='';$('sendStatus').textContent='Submitting secure invitation request...';
+ try{
+  const {data,error}=await sb.functions.invoke('blackcell-invite-employee',{body:{display_name:name,email,username:$('username').value.trim().toLowerCase(),clearance_level:Number($('level').value),access_code:$('access').value,security_code:$('security').value}});
+  let detail=null;if(error?.context?.json){try{detail=await error.context.json()}catch(_){}}
+  const res=detail||data;
+  if(error||res?.ok!==true){throw new Error((reasons[res?.reason]||res?.detail||error?.message||'Invitation not accepted')+' ['+(res?.reason||'request_error')+']');}
+  $('sendStatus').className='good';$('sendStatus').textContent='Invitation request accepted by Supabase. Check the recipient inbox for delivery. Codes are not in the email; provide them securely. No email-delivery receipt has been verified.';
+  $('access').value='';$('security').value='';await refreshMembers();
+ }catch(err){$('sendStatus').className='error';$('sendStatus').textContent='Invitation not sent: '+String(err?.message||err);}
+ finally{busy=false;$('sendInvite').disabled=false;$('sendInvite').textContent='SEND EMPLOYEE INVITATION';}
+});
+$('genUsername').onclick=()=>{$('username').value=username()};
+$('genAccess').onclick=()=>{$('access').value=digits(4)};
+$('genSecurity').onclick=()=>{$('security').value=digits(12)};
+document.querySelectorAll('[data-reveal]').forEach(b=>b.onclick=()=>{const f=$(b.dataset.reveal);f.type=f.type==='password'?'text':'password';b.textContent=f.type==='password'?'REVEAL':'HIDE';});
+$('previewInvitation').onclick=preview;
+$('add').onclick=create;$('close').onclick=closeModal;$('cancel').onclick=closeModal;
+$('search').oninput=render;$('filter').onchange=render;
+$('modal').addEventListener('mousedown',e=>{if(e.target===$('modal'))closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+render();getOwner().catch(e=>{showAuth('login');authError('Could not connect to Supabase. Try again.')});
+
+</script></body></html>
