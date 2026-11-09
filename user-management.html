@@ -84,7 +84,7 @@ const sb=createClient('https://eeddazzwqokqlzvzjlxz.supabase.co','sb_publishable
 const $=(id)=>document.getElementById(id);
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let members=[],busy=false;
-const reasons={sign_in_required:'Please sign in.',invalid_session:'Session expired. Sign in again.',verified_level7_owner_required:'Verify your master codes again to authorize this operation.',username_already_used:'That username is already assigned. Generate a new one.',invalid_employee_credentials:'Check the name, email, username and both numeric codes.',invitation_failed:'Supabase could not send the invitation. Verify email delivery configuration.',registration_not_completed:'Invitation could not be completed; no access was granted.',hourly_invitation_limit:'Invitation limit reached. Retry later.',invitation_service_unavailable:'Invitation service is unavailable. Please retry.',invitation_service_not_configured:'The invitation service is not configured.'};
+const reasons={sign_in_required:'Please sign in.',invalid_session:'Session expired. Sign in again.',verified_level7_owner_required:'Verify your master codes again to authorize this operation.',username_already_used:'That username is already assigned. Generate a new one.',invalid_employee_credentials:'Check the name, email, username and both numeric codes.',invitation_failed:'Supabase could not send the invitation. Verify email delivery configuration.',registration_not_completed:'Invitation could not be completed; no access was granted.',hourly_invitation_limit:'Invitation limit reached. Retry later.',invitation_service_unavailable:'Invitation service is unavailable. Please retry.',invitation_service_not_configured:'The invitation service is not configured.',owner_verification_unavailable:'Supabase could not check your owner verification. Retry or contact the administrator.'};
 function authError(s){$('authMessage').textContent=s||''}
 function showAuth(stage){$('authCover').hidden=false; $('loginForm').hidden=stage!=='login';$('verifyForm').hidden=stage!=='codes';$('authTitle').textContent=stage==='login'?'Owner Authorization':'Corporate Code Verification';$('authDescription').textContent=stage==='login'?'Sign in with your authorized account.':'Enter the existing NEXUS master access and security codes to unlock corporate management.'; authError('');}
 async function getOwner(){
@@ -156,9 +156,24 @@ $('userForm').addEventListener('submit',async e=>{
  $('sendStatus').className='';$('sendStatus').textContent='Submitting secure invitation request...';
  try{
   const {data,error}=await sb.functions.invoke('blackcell-invite-employee',{body:{display_name:name,email,username:$('username').value.trim().toLowerCase(),clearance_level:Number($('level').value),access_code:$('access').value,security_code:$('security').value}});
-  let detail=null;if(error?.context?.json){try{detail=await error.context.json()}catch(_){}}
+  let detail=null;
+  let responseCode=0;
+  const ctx=error?.context;
+  if(ctx){
+    responseCode=Number(ctx.status)||0;
+    try{
+      const raw=typeof ctx.clone==='function'?await ctx.clone().text():typeof ctx.text==='function'?await ctx.text():'';
+      if(raw)detail=JSON.parse(raw);
+    }catch(_){}
+  }
   const res=detail||data;
-  if(error||res?.ok!==true){throw new Error((reasons[res?.reason]||res?.detail||error?.message||'Invitation not accepted')+' ['+(res?.reason||'request_error')+']');}
+  if(error||res?.ok!==true){
+    const reason=res?.reason||'request_error';
+    const info=reasons[reason]||res?.detail||error?.message||'Invitation not accepted';
+    if(reason==='verified_level7_owner_required'){showAuth('codes');}
+    if(reason==='sign_in_required'||reason==='invalid_session'){showAuth('login');}
+    throw new Error((responseCode?'HTTP '+responseCode+': ':'')+info+' ['+reason+']');
+  }
   $('sendStatus').className='good';$('sendStatus').textContent='Invitation request accepted by Supabase. Check the recipient inbox for delivery. Codes are not in the email; provide them securely. No email-delivery receipt has been verified.';
   $('access').value='';$('security').value='';await refreshMembers();
  }catch(err){$('sendStatus').className='error';$('sendStatus').textContent='Invitation not sent: '+String(err?.message||err);}
