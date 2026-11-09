@@ -124,7 +124,7 @@ $('verifyForm').addEventListener('submit',async e=>{
  }catch(err){authError(String(err?.message||'Verification unavailable'))}finally{b.disabled=false;}
 });
 $('switchAccount').addEventListener('click',async()=>{await sb.auth.signOut();members=[];render();showAuth('login')});
-function statusOf(m){return m.active===false?'Suspended':!m.activated?'Pending':'Active'}
+function statusOf(m){return m.active===false?'Suspended':(!m.activated||!m.password_activated)?'Pending':'Active'}
 function render(){
  const rows=members.map(m=>({...m,status:statusOf(m)}));
  $('total').textContent=rows.length;
