@@ -51,7 +51,7 @@
         <div class="full"><label for="security">Security Code — 12 Digits</label><div class="codewrap"><input class="field" type="password" inputmode="numeric" id="security" required pattern="[0-9]{12}" maxlength="12" autocomplete="off"><button class="btn" type="button" id="genSecurity">GENERATE</button><button class="btn" type="button" data-reveal="security">REVEAL</button></div></div>
         <div class="full note-credentials">Codes are protected as server-side hashes. They cannot be retrieved later. Give them to the employee using a separate secure channel; they are not included in the invitation email.</div>
       </div>
-      <div class="row-actions"><button class="btn" type="button" id="previewInvitation">PREVIEW INVITATION</button><button class="btn primary" type="submit" id="sendInvite">SEND EMPLOYEE INVITATION</button><button class="btn" id="cancel" type="button">CANCEL</button></div>
+      <div class="row-actions"><button class="btn" type="button" id="previewInvitation">PREVIEW INVITATION</button><button class="btn" type="button" id="testInvite">CHECK CONNECTION — NO EMAIL</button><button class="btn primary" type="submit" id="sendInvite">SEND EMPLOYEE INVITATION</button><button class="btn" id="cancel" type="button">CANCEL</button></div>
       <div id="previewBox" hidden></div><div id="sendStatus" role="status" aria-live="polite"></div>
     </form>
     <div id="detail" hidden></div>
@@ -84,7 +84,7 @@ const sb=createClient('https://eeddazzwqokqlzvzjlxz.supabase.co','sb_publishable
 const $=(id)=>document.getElementById(id);
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let members=[],busy=false;
-const reasons={sign_in_required:'Please sign in.',invalid_session:'Session expired. Sign in again.',verified_level7_owner_required:'Verify your master codes again to authorize this operation.',username_already_used:'That username is already assigned. Generate a new one.',invalid_employee_credentials:'Check the name, email, username and both numeric codes.',invitation_failed:'Supabase could not send the invitation. Verify email delivery configuration.',registration_not_completed:'Invitation could not be completed; no access was granted.',hourly_invitation_limit:'Invitation limit reached. Retry later.',invitation_service_unavailable:'Invitation service is unavailable. Please retry.',invitation_service_not_configured:'The invitation service is not configured.',owner_verification_unavailable:'Supabase could not check your owner verification. Retry or contact the administrator.'};
+const reasons={sign_in_required:'Please sign in.',invalid_session:'Session expired. Sign in again.',verified_level7_owner_required:'Verify your master codes again to authorize this operation.',username_already_used:'That username is already assigned. Generate a new one.',invalid_employee_credentials:'Check the name, email, username and both numeric codes.',invitation_failed:'Supabase could not send the invitation. Verify email delivery configuration.',registration_not_completed:'Invitation could not be completed; no access was granted.',hourly_invitation_limit:'Invitation limit reached. Retry later.',invitation_service_unavailable:'Invitation service is unavailable. Please retry.',invitation_service_not_configured:'The invitation service is not configured.',owner_verification_unavailable:'Supabase could not check your owner verification. Retry or contact the administrator.',invitation_backend_not_ready:'The private invitation backend is not ready. Supabase rejected a required admin operation.'};
 function authError(s){$('authMessage').textContent=s||''}
 function showAuth(stage){$('authCover').hidden=false; $('loginForm').hidden=stage!=='login';$('verifyForm').hidden=stage!=='codes';$('authTitle').textContent=stage==='login'?'Owner Authorization':'Corporate Code Verification';$('authDescription').textContent=stage==='login'?'Sign in with your authorized account.':'Enter the existing NEXUS master access and security codes to unlock corporate management.'; authError('');}
 async function getOwner(){
@@ -183,6 +183,28 @@ $('genUsername').onclick=()=>{$('username').value=username()};
 $('genAccess').onclick=()=>{$('access').value=digits(4)};
 $('genSecurity').onclick=()=>{$('security').value=digits(12)};
 document.querySelectorAll('[data-reveal]').forEach(b=>b.onclick=()=>{const f=$(b.dataset.reveal);f.type=f.type==='password'?'text':'password';b.textContent=f.type==='password'?'REVEAL':'HIDE';});
+$('testInvite').onclick=async()=>{
+ const button=$('testInvite');
+ button.disabled=true;
+ $('sendStatus').className='';
+ $('sendStatus').textContent='Checking owner authorization, database and email-administration access. No invitation will be sent.';
+ try{
+  const {data,error}=await sb.functions.invoke('blackcell-invite-employee',{body:{action:'check'}});
+  let detail=null;
+  const ctx=error?.context;
+  if(ctx){try{detail=await ctx.clone().json()}catch(_){}}
+  const result=detail||data;
+  if(error||result?.ok!==true){
+   const reason=result?.reason||'connection_error';
+   throw new Error((ctx?.status?'HTTP '+ctx.status+': ':'')+(reasons[reason]||error?.message||reason)+' ['+reason+']');
+  }
+  $('sendStatus').className='good';
+  $('sendStatus').textContent='Secure backend connection verified. No email was sent. You can now try a test invitation.';
+ }catch(ex){
+  $('sendStatus').className='error';
+  $('sendStatus').textContent='Connection check failed: '+String(ex?.message||ex);
+ }finally{button.disabled=false}
+};
 $('previewInvitation').onclick=preview;
 $('add').onclick=create;$('close').onclick=closeModal;$('cancel').onclick=closeModal;
 $('search').oninput=render;$('filter').onchange=render;
